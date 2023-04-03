@@ -11,14 +11,7 @@ def open_window2():
     system("del auto.txt")
     system("mail-csv.py")
 
-def open_window3():
-    system("curl -O https://codeload.github.com/brahimcah/SAPD/zip/refs/heads/main")
-    zip_file = filedialog.askopenfilename()
-    print(zip_file)
-    if zip_file:
-        with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-            zip_ref.extractall('./datos')
-    system("del *zip")
+
 
 
 # create main window
