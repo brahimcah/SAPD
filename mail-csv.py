@@ -85,7 +85,7 @@ class FormWindow(tk.Frame):
         self.generate_csv_button.pack()
 
          # String field
-        self.string_label = tk.Label(self, text='Versión: 1.0.1 - 30/03/2023')
+        self.string_label = tk.Label(self, text='Versión: 1.0.3 - 03/04/2023')
         self.string_label.pack()
 
 
