@@ -72,6 +72,11 @@ class FormWindow(tk.Frame):
         self.string_entry = tk.Entry(self)
         self.string_entry.pack()
 
+        # String field
+        self.string2_label = tk.Label(self, text='Observacion')
+        self.string2_label.pack()
+        self.string2_entry = tk.Entry(self)
+        self.string2_entry.pack()
 
         # Multiple cell fields
         self.cell_label = tk.Label(self, text='Cells')
@@ -85,7 +90,7 @@ class FormWindow(tk.Frame):
         self.generate_csv_button.pack()
 
          # String field
-        self.string_label = tk.Label(self, text='Versión: 1.0.3 - 03/04/2023')
+        self.string_label = tk.Label(self, text='Versión: 1.0.3 - 06/04/2023')
         self.string_label.pack()
 
 
@@ -95,6 +100,7 @@ class FormWindow(tk.Frame):
         email1 = self.email1_entry.get()
         email2 = self.email2_entry.get()
         string = self.string_entry.get()
+        string2 = self.string2_entry.get()
         cells = self.cell_entry.get('1.0', tk.END)
 
 
@@ -112,6 +118,9 @@ class FormWindow(tk.Frame):
         file.write(string)
         file.close()
 
+        file = open("obser.txt", "w")
+        file.write(string2)
+        file.close()
 
         # Create CSV file and write data
         with open('permisos.csv', 'w', newline='') as file:

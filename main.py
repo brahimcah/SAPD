@@ -23,9 +23,7 @@ main_window.geometry('500x500')
 button2 = tk.Button(main_window, text='Generar Avisos de Permisos DGT', command=open_window2)
 
 # add buttons to main window
-button1.pack()
 button2.pack()
-button3.pack()
 
 # start the event loop
 main_window.mainloop()
