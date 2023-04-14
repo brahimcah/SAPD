@@ -13,4 +13,4 @@ Github Desktop: https://central.github.com/deployments/desktop/desktop/latest/wi
 ![image](https://user-images.githubusercontent.com/8999609/231985202-c3c625f3-5e3f-4fab-be1d-a2ee86605229.png)
 <br>
 En la url que nos solicita vamos a indica: **brahimcah/sapd** <br>
-En la url que nos solicita vamos a indica: **c:\permdev\sapd** <br>
+En la url que nos solicita vamos a indica: **c:\permdev\sapd** <br> Y pulsaremos en Clone <br>
