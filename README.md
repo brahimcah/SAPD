@@ -1,7 +1,6 @@
 # SAPD
 
 
-Packs de intalación
 <br>
 
 ## Programas para instalar
