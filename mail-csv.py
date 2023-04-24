@@ -83,7 +83,7 @@ class FormWindow(tk.Frame):
         self.string2_entry.pack()
 
         # Multiple cell fields
-        self.cell_label = tk.Label(self, text='Cells')
+        self.cell_label = tk.Label(self, text='DOI')
         self.cell_label.pack()
         self.cell_entry = tk.Text(self, height=10)
         self.cell_entry.pack()
@@ -94,7 +94,7 @@ class FormWindow(tk.Frame):
         self.generate_csv_button.pack()
 
          # String field
-        self.string_label = tk.Label(self, text='Versión: 1.0.3 - 06/04/2023')
+        self.string_label = tk.Label(self, text='Versión: 1.0.4 - 24/04/2023')
         self.string_label.pack()
 
 
