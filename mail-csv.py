@@ -7,6 +7,7 @@ import csv
 import zipfile
 from datetime import datetime
 import webbrowser
+from os import system
 
 
 
@@ -90,14 +91,19 @@ class FormWindow(tk.Frame):
 
 
         # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Generate CSV', command=self.generate_csv)
+        self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
+        self.generate_csv_button.pack()
+
+        # Button to generate CSV
+        self.generate_csv_button = tk.Button(self, text='Solicitar Permiso', command=self.reclam)
         self.generate_csv_button.pack()
 
          # String field
-        self.string_label = tk.Label(self, text='Versión: 1.0.4 - 24/04/2023')
+        self.string_label = tk.Label(self, text='Versión: 1.1.1 - 03/05/2023')
         self.string_label.pack()
 
-
+    def reclam(self):
+        system("perm.py")
    
     def generate_csv(self):
         # Get values from the form
