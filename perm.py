@@ -1,151 +1,62 @@
-import sys
-if sys.version_info[0] == 3:
-    import tkinter as tk
-else:
-    import Tkinter as tk
-import csv
-import zipfile
-from datetime import datetime
-import webbrowser
-from os import system
+import tkinter as tk
+import urllib.parse
 
+def generar_url_mailto():
+    # Obtener los valores de los campos del formulario
+    nombre = nombre_entry.get()
+    num_centro = num_centro_entry.get()
+    doi = doi_entry.get()
+    tipo_centro = tipo_centro_var.get()
+    buzon = buzon_entry.get()
 
+    # Crear el mensaje de correo electrónico 
+    #El GI-000 ha sido informado por el SAPD que el permiso de conducir DNI/NIE se encuentra en la Jefatura con el número 000
+    mensaje = f"Buenos días,\n El {tipo_centro} ha sido informado por el SAPD que el permiso de conducir {doi} se encuentra en la Jefatura con el número {buzon}\nNombre: {nombre}\nNº CENTRO: {num_centro}\nDOI: {doi}\nTipo de Centro: {tipo_centro}"
+    
+    # Codificar el mensaje y el asunto como parámetros en una URL "mailto"
+    body = urllib.parse.quote(mensaje)
+    asunto = urllib.parse.quote(f"RECOGIDA PERMISO {nombre} ({doi})")
+    mailto_url = f"mailto:destinatario@gmail.com?subject={asunto}&body={body}"
 
+    # Abrir la URL "mailto" en el navegador por defecto
+    import webbrowser
+    webbrowser.open(mailto_url)
 
-
-archivo = open("mail")
-mailsend = archivo.read()
-print(mailsend)
-archivo.close()
-
-
-def compra():
-    now = datetime.now()
-    format = now.strftime('%d%m%Y%H%M%S')
-    print(format)
-
-
-    url_guarda="C:\permdev\\"+format+".zip"
-
-
-    try:
-        import zlib
-        compression = zipfile.ZIP_DEFLATED
-    except:            
-        compression = zipfile.ZIP_STORED    
-    zf = zipfile.ZipFile(url_guarda, mode="w")
-    try:
-        zf.write("auto.txt", compress_type=compression)
-        zf.write("mail.txt", compress_type=compression)
-        zf.write("permisos.csv", compress_type=compression)
-    finally:
-        zf.close()
-    mailito = "mailto:"+mailsend+"?&subject= CSV-ZIP PERMISOS DEV &body= Buenos días, %0A te adjunto los datos del programa: %0A %0A Un Saludo.zip"
-    webbrowser.open(mailito)
-    mailito = "C:\permdev"
-    webbrowser.open(mailito)        
-
-
-class FormWindow(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.master.geometry('500x500')
-        self.master.title('Formulario ')
-        self.pack()
-        self.create_widgets()
-
-
-    def create_widgets(self):
-        # Email fields
-        self.email1_label = tk.Label(self, text='Email 1:')
-        self.email1_label.pack()
-        self.email1_entry = tk.Entry(self)
-        self.email1_entry.pack()
-
-
-        self.email2_label = tk.Label(self, text='Email 2:')
-        self.email2_label.pack()
-        self.email2_entry = tk.Entry(self)
-        self.email2_entry.pack()
-        
-
-
-        # String field
-        self.string_label = tk.Label(self, text='CODIGO CENTRO (EX: GE0000)')
-        self.string_label.pack()
-        self.string_entry = tk.Entry(self)
-        self.string_entry.pack()
-
-        # String field
-        self.string2_label = tk.Label(self, text='Observacion')
-        self.string2_label.pack()
-        self.string2_entry = tk.Entry(self)
-        self.string2_entry.pack()
-
-        # Multiple cell fields
-        self.cell_label = tk.Label(self, text='DOI')
-        self.cell_label.pack()
-        self.cell_entry = tk.Text(self, height=10)
-        self.cell_entry.pack()
-
-
-        # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
-        self.generate_csv_button.pack()
-
-        # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Solicitar Permiso', command=self.reclam)
-        self.generate_csv_button.pack()
-
-         # String field
-        self.string_label = tk.Label(self, text='Versión: 1.1.1 - 03/05/2023')
-        self.string_label.pack()
-
-    def reclam(self):
-        system("perm.py")
-   
-    def generate_csv(self):
-        # Get values from the form
-        email1 = self.email1_entry.get()
-        email2 = self.email2_entry.get()
-        string = self.string_entry.get()
-        string2 = self.string2_entry.get()
-        cells = self.cell_entry.get('1.0', tk.END)
-
-
-        file = open("mail.txt", "w")
-        #Comprobamos si el mail2 esta rellenado o no
-        if not email2:
-            mailstotal = email1
-        else:
-            mailstotal = email1 + ";" + email2
-        file.write(mailstotal)
-        file.close()
-
-
-        file = open("auto.txt", "w")
-        file.write(string)
-        file.close()
-
-        file = open("obser.txt", "w")
-        file.write(string2)
-        file.close()
-
-        # Create CSV file and write data
-        with open('permisos.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows([cell.strip().split('\t') for cell in cells.split('\n')])
-       
-        print('CSV file generated.')
-        compra()
-   
-   
-
-
+# Crear la ventana principal
 root = tk.Tk()
-form_window = FormWindow(root)
-form_window.mainloop()
 
+# Crear los campos del formulario
+nombre_label = tk.Label(root, text="Nombre:")
+nombre_label.pack()
+nombre_entry = tk.Entry(root)
+nombre_entry.pack()
 
+num_centro_label = tk.Label(root, text="Nº CENTRO:")
+num_centro_label.pack()
+num_centro_entry = tk.Entry(root)
+num_centro_entry.pack()
 
+doi_label = tk.Label(root, text="DOI:")
+doi_label.pack()
+doi_entry = tk.Entry(root)
+doi_entry.pack()
+
+buzons = tk.Label(root, text="Buzon:")
+buzons.pack()
+buzon_entry = tk.Entry(root)
+buzon_entry.pack()
+
+# Crear la opción de selección del tipo de centro
+tipo_centro_label = tk.Label(root, text="Tipo de Centro:")
+tipo_centro_label.pack()
+tipo_centro_var = tk.StringVar()
+tipo_centro_var.set("-")
+tipo_centro_menu = tk.OptionMenu(root, tipo_centro_var, "Centro Médico", "Autoescuela", "Gestoría")
+tipo_centro_menu.pack()
+
+# Crear el botón para generar la URL "mailto"
+generar_url_boton = tk.Button(root, text="Generar URL", command=generar_url_mailto)
+generar_url_boton.pack()
+
+# Iniciar la ventana principal
+root.mainloop()

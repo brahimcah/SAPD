@@ -1,151 +1,44 @@
-import sys
-if sys.version_info[0] == 3:
-    import tkinter as tk
-else:
-    import Tkinter as tk
-import csv
-import zipfile
-from datetime import datetime
-import webbrowser
-from os import system
+import tkinter as tk
+import os
+import subprocess
 
-
-
-
-
-archivo = open("mail")
-mailsend = archivo.read()
-print(mailsend)
-archivo.close()
-
-
-def compra():
-    now = datetime.now()
-    format = now.strftime('%d%m%Y%H%M%S')
-    print(format)
-
-
-    url_guarda="C:\permdev\\"+format+".zip"
-
-
-    try:
-        import zlib
-        compression = zipfile.ZIP_DEFLATED
-    except:            
-        compression = zipfile.ZIP_STORED    
-    zf = zipfile.ZipFile(url_guarda, mode="w")
-    try:
-        zf.write("auto.txt", compress_type=compression)
-        zf.write("mail.txt", compress_type=compression)
-        zf.write("permisos.csv", compress_type=compression)
-    finally:
-        zf.close()
-    mailito = "mailto:"+mailsend+"?&subject= CSV-ZIP PERMISOS DEV &body= Buenos días, %0A te adjunto los datos del programa: %0A %0A Un Saludo.zip"
-    webbrowser.open(mailito)
-    mailito = "C:\permdev"
-    webbrowser.open(mailito)        
-
-
-class FormWindow(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
+class Menu:
+    def __init__(self, master):
         self.master = master
-        self.master.geometry('500x500')
-        self.master.title('Formulario ')
-        self.pack()
-        self.create_widgets()
+        master.title("SAPD")
+
+        self.frame = tk.Frame(master, bg="#333")
+        self.frame.pack(expand=True, fill="both")
+
+        self.label = tk.Label(self.frame, text="Seleciona la opción:", fg="#fff", bg="#333", font=("Helvetica", 16))
+        self.label.pack(pady=20)
+
+        self.button_a = tk.Button(self.frame, text="ENVIOS SAPD CSV-ZIP", fg="#fff", bg="#118de6", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_a)
+        self.button_a.pack(pady=10)
+
+        self.button_b = tk.Button(self.frame, text="SOLICITAR PERMISO", fg="#fff", bg="#30a41b", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_b)
+        self.button_b.pack(pady=10)
+
+        self.button_c = tk.Button(self.frame, text="SOPORTE", fg="#fff", bg="#ff0808", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_c)
+        self.button_c.pack(pady=10)
+
+        self.button_salir = tk.Button(self.frame, text="Salir", fg="#fff", bg="#333", font=("Helvetica", 12), width=20, height=3, command=master.quit)
+        self.button_salir.pack(pady=10)
+
+        self.label = tk.Label(self.frame, text="Versión: 2.0 - 10/05/2023", fg="#fff", bg="#333", font=("Helvetica", 11))
+        self.label.pack(pady=20)
+
+    def ejecutar_a(self):
+        subprocess.run(['python', 'sapd-send.py'])
+
+    def ejecutar_b(self):
+        subprocess.run(['python', 'perm.py'])
 
 
-    def create_widgets(self):
-        # Email fields
-        self.email1_label = tk.Label(self, text='Email 1:')
-        self.email1_label.pack()
-        self.email1_entry = tk.Entry(self)
-        self.email1_entry.pack()
-
-
-        self.email2_label = tk.Label(self, text='Email 2:')
-        self.email2_label.pack()
-        self.email2_entry = tk.Entry(self)
-        self.email2_entry.pack()
-        
-
-
-        # String field
-        self.string_label = tk.Label(self, text='CODIGO CENTRO (EX: GE0000)')
-        self.string_label.pack()
-        self.string_entry = tk.Entry(self)
-        self.string_entry.pack()
-
-        # String field
-        self.string2_label = tk.Label(self, text='Observacion')
-        self.string2_label.pack()
-        self.string2_entry = tk.Entry(self)
-        self.string2_entry.pack()
-
-        # Multiple cell fields
-        self.cell_label = tk.Label(self, text='DOI')
-        self.cell_label.pack()
-        self.cell_entry = tk.Text(self, height=10)
-        self.cell_entry.pack()
-
-
-        # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
-        self.generate_csv_button.pack()
-
-        # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Solicitar Permiso', command=self.reclam)
-        self.generate_csv_button.pack()
-
-         # String field
-        self.string_label = tk.Label(self, text='Versión: 1.1.1 - 03/05/2023')
-        self.string_label.pack()
-
-    def reclam(self):
-        system("perm.py")
-   
-    def generate_csv(self):
-        # Get values from the form
-        email1 = self.email1_entry.get()
-        email2 = self.email2_entry.get()
-        string = self.string_entry.get()
-        string2 = self.string2_entry.get()
-        cells = self.cell_entry.get('1.0', tk.END)
-
-
-        file = open("mail.txt", "w")
-        #Comprobamos si el mail2 esta rellenado o no
-        if not email2:
-            mailstotal = email1
-        else:
-            mailstotal = email1 + ";" + email2
-        file.write(mailstotal)
-        file.close()
-
-
-        file = open("auto.txt", "w")
-        file.write(string)
-        file.close()
-
-        file = open("obser.txt", "w")
-        file.write(string2)
-        file.close()
-
-        # Create CSV file and write data
-        with open('permisos.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows([cell.strip().split('\t') for cell in cells.split('\n')])
-       
-        print('CSV file generated.')
-        compra()
-   
-   
+    def ejecutar_c(self):
+        subprocess.run(['python', 'soporte.py'])
 
 
 root = tk.Tk()
-form_window = FormWindow(root)
-form_window.mainloop()
-
-
-
+menu = Menu(root)
+root.mainloop()
