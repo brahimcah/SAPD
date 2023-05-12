@@ -16,7 +16,7 @@ def generar_url_mailto():
     # Codificar el mensaje y el asunto como parámetros en una URL "mailto"
     body = urllib.parse.quote(mensaje)
     asunto = urllib.parse.quote(f"RECOGIDA PERMISO {nombre} ({doi})")
-    mailto_url = f"mailto:destinatario@gmail.com?subject={asunto}&body={body}"
+    mailto_url = f"mailto:crc.jptgi@dgt.es;consulta.jptgi@dgt.es?subject={asunto}&body={body}"
 
     # Abrir la URL "mailto" en el navegador por defecto
     import webbrowser
