@@ -40,7 +40,7 @@ def compra():
         zf.write("permisos.csv", compress_type=compression)
     finally:
         zf.close()
-    mailito = "mailto:"+mailsend+"?&subject= CSV-ZIP PERMISOS DEV &body= Buenos días, %0A te adjunto los datos del programa: %0A %0A Un Saludo.zip"
+    mailito = "mailto:"+mailsend+"?&subject= CSV-ZIP PERMISOS DEV &body= Buenos días, %0A te adjunto los datos del programa: %0A %0A Un Saludo"
     webbrowser.open(mailito)
     mailito = "C:\permdev"
     webbrowser.open(mailito)        
@@ -94,13 +94,7 @@ class FormWindow(tk.Frame):
         self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
         self.generate_csv_button.pack()
 
-        # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Solicitar Permiso', command=self.reclam)
-        self.generate_csv_button.pack()
-
-         # String field
-        self.string_label = tk.Label(self, text='Versión: 1.1.1 - 03/05/2023')
-        self.string_label.pack()
+      
 
     def reclam(self):
         system("perm.py")
