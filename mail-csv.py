@@ -25,7 +25,7 @@ class Menu:
         self.button_salir = tk.Button(self.frame, text="Salir", fg="#fff", bg="#333", font=("Helvetica", 12), width=20, height=3, command=master.quit)
         self.button_salir.pack(pady=10)
 
-        self.label = tk.Label(self.frame, text="Versión: 2.0 - 10/05/2023", fg="#fff", bg="#333", font=("Helvetica", 11))
+        self.label = tk.Label(self.frame, text="Versión: 3.0.1 - 17/07/2023", fg="#fff", bg="#333", font=("Helvetica", 11))
         self.label.pack(pady=20)
 
     def ejecutar_a(self):
