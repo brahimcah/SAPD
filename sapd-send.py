@@ -51,6 +51,9 @@ class FormWindow(tk.Frame):
         self.pack()
         self.create_widgets()
 
+        # Load previously entered data (except DOI)
+        self.load_data()
+
     def create_widgets(self):
         # Email fields
         self.email1_label = tk.Label(self, text='Email 1:')
@@ -78,6 +81,10 @@ class FormWindow(tk.Frame):
         # Button to generate CSV
         self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
         self.generate_csv_button.pack()
+
+        # Button to clear DOI field
+        self.clear_doi_button = tk.Button(self, text='Limpiar DOI', command=self.clear_doi)
+        self.clear_doi_button.pack()
 
     def reclam(self):
         system("perm.py")
@@ -114,6 +121,34 @@ class FormWindow(tk.Frame):
 
         messagebox.showinfo('Éxito', 'Archivo CSV generado.')
         compra()
+
+    def clear_doi(self):
+        self.cell_entry.delete('1.0', tk.END)
+
+    def load_data(self):
+        try:
+            with open('data.txt', 'r') as file:
+                lines = file.readlines()
+                if len(lines) >= 3:
+                    self.email1_entry.insert(0, lines[0].strip())
+                    self.email2_entry.insert(0, lines[1].strip())
+                    self.string_entry.insert(0, lines[2].strip())
+        except FileNotFoundError:
+            pass
+
+    def save_data(self):
+        email1 = self.email1_entry.get()
+        email2 = self.email2_entry.get()
+        string = self.string_entry.get()
+
+        with open('data.txt', 'w') as file:
+            file.write(email1 + '\n')
+            file.write(email2 + '\n')
+            file.write(string + '\n')
+
+    def destroy(self):
+        self.save_data()
+        super().destroy()
 
 
 root = tk.Tk()
