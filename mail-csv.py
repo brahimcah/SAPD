@@ -6,7 +6,7 @@ class Menu:
     def __init__(self, master):
         self.master = master
         master.title("SAPD")
-        master.geometry("600x600")  # Define el tamaño de la ventana principal
+        master.geometry("500x620")  # Define el tamaño de la ventana principal
 
         # Colores
         bg_color = "#333"
@@ -16,6 +16,7 @@ class Menu:
             "a": "#118de6",
             "b": "#30a41b",
             "c": "#ff0808",
+            "d": "#5dc1b9",
             "salir": bg_color,
         }
 
@@ -31,6 +32,7 @@ class Menu:
             "a": ("ENVIOS DATOS SAPD", 20, 3, self.ejecutar_a),
             "b": ("SOLICITAR PERMISO JPT", 20, 3, self.ejecutar_b),
             "c": ("SOPORTE", 20, 3, self.ejecutar_c),
+            "d": ("AJUSTES", 20, 3, self.ejecutar_d),
             "salir": ("Salir", 20, 3, master.quit),
         }
 
@@ -52,6 +54,9 @@ class Menu:
 
     def ejecutar_c(self):
         subprocess.run(['python', 'soporte.py'])
+
+    def ejecutar_d(self):
+        subprocess.run(['python', 'conf.py'])
 
 
 root = tk.Tk()
