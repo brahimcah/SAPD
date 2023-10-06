@@ -1,32 +1,47 @@
 import tkinter as tk
-import os
 import subprocess
+from os import system
 
 class Menu:
     def __init__(self, master):
         self.master = master
         master.title("SAPD")
+        master.geometry("600x600")  # Define el tamaño de la ventana principal
 
-        self.frame = tk.Frame(master, bg="#333")
+        # Colores
+        bg_color = "#333"
+        label_fg_color = "#fff"
+        button_fg_color = "#fff"
+        button_bg_color = {
+            "a": "#118de6",
+            "b": "#30a41b",
+            "c": "#ff0808",
+            "salir": bg_color,
+        }
+
+        self.frame = tk.Frame(master, bg=bg_color)
         self.frame.pack(expand=True, fill="both")
 
-        self.label = tk.Label(self.frame, text="Seleciona la opción:", fg="#fff", bg="#333", font=("Helvetica", 16))
-        self.label.pack(pady=20)
+        # Crear etiqueta de selección
+        self.label = tk.Label(self.frame, text="SISTEMA AUTOMATIZADO \n DE PERMISOS DEVUELTOS ", fg=label_fg_color, bg=bg_color, font=("Helvetica", 16))
+        self.label.pack(pady=30)
 
-        self.button_a = tk.Button(self.frame, text="ENVIOS SAPD CSV-ZIP", fg="#fff", bg="#118de6", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_a)
-        self.button_a.pack(pady=10)
+        # Botones en un diccionario para facilitar su creación y gestión
+        buttons = {
+            "a": ("ENVIOS DATOS SAPD", 20, 3, self.ejecutar_a),
+            "b": ("SOLICITAR PERMISO JPT", 20, 3, self.ejecutar_b),
+            "c": ("SOPORTE", 20, 3, self.ejecutar_c),
+            "salir": ("Salir", 20, 3, master.quit),
+        }
 
-        self.button_b = tk.Button(self.frame, text="SOLICITAR PERMISO", fg="#fff", bg="#30a41b", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_b)
-        self.button_b.pack(pady=10)
+        for key, (text, width, height, command) in buttons.items():
+            button = tk.Button(self.frame, text=text, fg=button_fg_color, bg=button_bg_color.get(key, None),
+                               font=("Helvetica", 12), width=width, height=height, command=command)
+            button.pack(pady=10)
 
-        self.button_c = tk.Button(self.frame, text="SOPORTE", fg="#fff", bg="#ff0808", font=("Helvetica", 12), width=20, height=3, command=self.ejecutar_c)
-        self.button_c.pack(pady=10)
-
-        self.button_salir = tk.Button(self.frame, text="Salir", fg="#fff", bg="#333", font=("Helvetica", 12), width=20, height=3, command=master.quit)
-        self.button_salir.pack(pady=10)
-
-        self.label = tk.Label(self.frame, text="Versión: 3.0.1 - 17/07/2023", fg="#fff", bg="#333", font=("Helvetica", 11))
-        self.label.pack(pady=20)
+        # Etiqueta de versión
+        self.version_label = tk.Label(self.frame, text="Versión: 3.2.1 - 06/10/2023", fg=label_fg_color, bg=bg_color, font=("Helvetica", 11))
+        self.version_label.pack(pady=20)
 
     def ejecutar_a(self):
         subprocess.run(['python', 'sapd-send.py'])
