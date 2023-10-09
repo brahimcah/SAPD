@@ -37,6 +37,9 @@ class Menu:
 
     def ejecutar_c(self):
         subprocess.run(['python', 'soporte.py'])
+        
+    def ejecutar_d(self):
+        subprocess.run(['python', 'conf.py'])
 
 
 root = tk.Tk()
