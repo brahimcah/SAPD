@@ -42,7 +42,11 @@ class Menu:
             button.pack(pady=10)
 
         # Etiqueta de versión
+<<<<<<< Updated upstream
         self.version_label = tk.Label(self.frame, text="Versión: 4.1.1 - 07/10/2023", fg=label_fg_color, bg=bg_color, font=("Helvetica", 11))
+=======
+        self.version_label = tk.Label(self.frame, text="Versión: 4.1.1 - 09/10/2023", fg=label_fg_color, bg=bg_color, font=("Helvetica", 11))
+>>>>>>> Stashed changes
         self.version_label.pack(pady=20)
 
     def ejecutar_a(self):
