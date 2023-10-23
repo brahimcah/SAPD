@@ -3,30 +3,41 @@ from tkinter import filedialog
 from tkinter import messagebox
 import os
 
-def modificar_y_guardar(archivo):
+# Lista de correos electrónicos y correos electrónicos CRC asociados con cada provincia
+correos = {
+    "Girona": ["consulta.jptgi@dgt.es", "crc.jptgi@dgt.es"]
+}
+
+def modificar_y_guardar(archivo, provincia):
     try:
         with open(archivo, 'w') as f:
-            contenido = texto.get(1.0, tk.END)
+            contenido = correos[provincia][0] if "mail" in archivo else correos[provincia][1]
             f.write(contenido)
-        messagebox.showinfo("Éxito", "Archivo modificado y guardado correctamente.")
+        messagebox.showinfo("Éxito", f"Archivo {os.path.basename(archivo)} modificado y guardado correctamente.")
     except Exception as e:
         messagebox.showerror("Error", f"Ocurrió un error: {str(e)}")
 
 def modificar_mail():
+    provincia = provincia_var.get()
     archivo_mail = os.path.join(os.getcwd(), "mail")
     archivo_label.config(text=f"Archivo seleccionado: {os.path.basename(archivo_mail)}")
-    modificar_y_guardar(archivo_mail)
+    modificar_y_guardar(archivo_mail, provincia)
 
 def modificar_mailcrc():
+    provincia = provincia_var.get()
     archivo_mailcrc = os.path.join(os.getcwd(), "mailcrc")
     archivo_label.config(text=f"Archivo seleccionado: {os.path.basename(archivo_mailcrc)}")
-    modificar_y_guardar(archivo_mailcrc)
+    modificar_y_guardar(archivo_mailcrc, provincia)
 
 ventana = tk.Tk()
 ventana.title("Modificar y Guardar Archivos")
 
-texto = tk.Text(ventana, height=10, width=50)
-texto.pack(padx=20, pady=20)
+provincias = list(correos.keys())
+provincia_var = tk.StringVar(ventana)
+provincia_var.set(provincias[0])  # Establecer el valor predeterminado
+
+provincia_menu = tk.OptionMenu(ventana, provincia_var, *provincias)
+provincia_menu.pack(padx=20, pady=20)
 
 archivo_label = tk.Label(ventana, text="Archivo seleccionado: Ninguno")
 archivo_label.pack()
