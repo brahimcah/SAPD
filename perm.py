@@ -62,6 +62,7 @@ year_entry.grid(row=4, column=1, padx=10, pady=5)
 generar_url_boton = tk.Button(root, text="Generar URL", command=generar_url_mailto)
 generar_url_boton.grid(row=5, column=0, columnspan=2, pady=10)
 
+
 # Ajustar el tamaño de las columnas
 for i in range(2):
     root.grid_columnconfigure(i, weight=1)

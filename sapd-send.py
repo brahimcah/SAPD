@@ -82,6 +82,10 @@ class FormWindow(tk.Frame):
         self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
         self.generate_csv_button.pack()
 
+        # Button auto-send sapd
+        self.autoenvio-sapd = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
+        self.autoenvio-sapd.pack()
+
         # Button to clear DOI field
         self.clear_doi_button = tk.Button(self, text='Limpiar DOI', command=self.clear_doi)
         self.clear_doi_button.pack()
@@ -121,6 +125,10 @@ class FormWindow(tk.Frame):
 
         messagebox.showinfo('Éxito', 'Archivo CSV generado.')
         compra()
+    
+    def auto-send(self):
+        generate_csv(self)
+        
 
     def clear_doi(self):
         self.cell_entry.delete('1.0', tk.END)
