@@ -6,9 +6,9 @@ from email.mime.application import MIMEApplication
 
 def enviar_correo(adjunto, destinatario):
     # Configuración del servidor SMTP
-    servidor_smtp = 'smtp.un-click.org'
-    puerto_smtp = 587
-    usuario_smtp = 'noreplay@un-click.org'
+    servidor_smtp = 'mail.un-click.org'
+    puerto_smtp = 465
+    usuario_smtp = 'noreply@un-click.org'
     contraseña_smtp = 'b41581011-R'
 
     # Configuración del mensaje
@@ -35,7 +35,7 @@ def enviar_correo(adjunto, destinatario):
 
 if __name__ == "__main__":
     # Directorio de la carpeta c:\permdev\
-    directorio = r'C:\permdev'
+    directorio = r'C:\\permdev'
 
     # Obtener la lista de archivos en el directorio
     archivos = os.listdir(directorio)
