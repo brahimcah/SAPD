@@ -8,7 +8,7 @@ def enviar_correo(adjunto, destinatario):
     # Configuración del servidor SMTP
     servidor_smtp = 'mail.un-click.org'
     puerto_smtp = 465
-    usuario_smtp = 'noreply@un-click.org'
+    usuario_smtp = 'admin@un-click.org'
     contraseña_smtp = 'b41581011-R'
 
     # Configuración del mensaje
@@ -35,7 +35,7 @@ def enviar_correo(adjunto, destinatario):
 
 if __name__ == "__main__":
     # Directorio de la carpeta c:\permdev\
-    directorio = r'C:\\permdev'
+    directorio = r'C:\permdev'
 
     # Obtener la lista de archivos en el directorio
     archivos = os.listdir(directorio)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
 
         # Correo destinatario
         destinatario_correo = 'brahimcah@gmail.com'
-
+        print(ruta_ultimo_zip)
         # Enviar el correo con el último ZIP adjunto
         enviar_correo(ruta_ultimo_zip, destinatario_correo)
         print(f"Correo enviado con éxito a {destinatario_correo} con el archivo adjunto: {ultimo_zip}")
