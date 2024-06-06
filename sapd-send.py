@@ -1,10 +1,5 @@
-import sys
-if sys.version_info[0] == 3:
-    import tkinter as tk
-    from tkinter import messagebox
-else:
-    import Tkinter as tk
-    import tkMessageBox as messagebox
+import tkinter as tk
+from tkinter import ttk, messagebox
 import csv
 import zipfile
 from datetime import datetime
@@ -13,16 +8,14 @@ from os import system
 
 archivo = open("mail")
 mailsend = archivo.read()
-print(mailsend)
 archivo.close()
 
 
 def compra():
     now = datetime.now()
     format = now.strftime('%d%m%Y%H%M%S')
-    print(format)
 
-    url_guarda = "C:\permdev\\" + format + ".zip"
+    url_guarda = "C:\\permdev\\" + format + ".zip"
 
     try:
         import zlib
@@ -38,59 +31,81 @@ def compra():
         zf.close()
     mailito = "mailto:" + mailsend + "?&subject= CSV-ZIP PERMISOS DEV &body= Buenos días, %0A te adjunto los datos del programa: %0A %0A Un Saludo"
     webbrowser.open(mailito)
-    mailito = "C:\permdev"
+    mailito = "C:\\permdev"
     webbrowser.open(mailito)
 
 
-class FormWindow(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.master.geometry('500x500')
-        self.master.title('Formulario ')
-        self.pack()
+class FormWindow(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title('Formulario')
+        self.geometry('500x500')
+
+        # Create a style
+        self.style = ttk.Style(self)
+
+        # Set the theme to a modern theme (e.g., 'clam', 'alt', 'default', 'vista', etc.)
+        self.style.theme_use('clam')
+
+        # Configure the style for specific elements
+        self.style.configure('TButton', font=('Helvetica', 12))
+        self.style.configure('TLabel', font=('Helvetica', 12))
+        self.style.configure('TEntry', font=('Helvetica', 12))
+
         self.create_widgets()
 
         # Load previously entered data (except DOI)
         self.load_data()
 
     def create_widgets(self):
-        # Email fields
-        self.email1_label = tk.Label(self, text='Email 1:')
-        self.email1_label.pack()
-        self.email1_entry = tk.Entry(self)
-        self.email1_entry.pack()
+        container = ttk.Frame(self)
+        container.pack(fill=tk.BOTH, expand=True)
 
-        self.email2_label = tk.Label(self, text='Email 2:')
-        self.email2_label.pack()
-        self.email2_entry = tk.Entry(self)
-        self.email2_entry.pack()
+        # Email fields
+        email_frame = ttk.Frame(container)
+        email_frame.pack(pady=10)
+
+        self.email1_label = ttk.Label(email_frame, text='Email 1:')
+        self.email1_label.pack(side=tk.LEFT, padx=5)
+        self.email1_entry = ttk.Entry(email_frame)
+        self.email1_entry.pack(side=tk.LEFT, padx=5)
+
+        email2_frame = ttk.Frame(container)
+        email2_frame.pack(pady=10)
+
+        self.email2_label = ttk.Label(email2_frame, text='Email 2:')
+        self.email2_label.pack(side=tk.LEFT, padx=5)
+        self.email2_entry = ttk.Entry(email2_frame)
+        self.email2_entry.pack(side=tk.LEFT, padx=5)
 
         # String field
-        self.string_label = tk.Label(self, text='CODIGO CENTRO (EX: GE0000)')
-        self.string_label.pack()
-        self.string_entry = tk.Entry(self)
-        self.string_entry.pack()
+        string_frame = ttk.Frame(container)
+        string_frame.pack(pady=10)
+
+        self.string_label = ttk.Label(string_frame, text='CODIGO CENTRO (EX: GE0000)')
+        self.string_label.pack(side=tk.LEFT, padx=5)
+        self.string_entry = ttk.Entry(string_frame)
+        self.string_entry.pack(side=tk.LEFT, padx=5)
 
         # Multiple cell fields
-        self.cell_label = tk.Label(self, text='DOI')
-        self.cell_label.pack()
-        self.cell_entry = tk.Text(self, height=10)
-        self.cell_entry.pack()
+        doi_frame = ttk.Frame(container)
+        doi_frame.pack(pady=10)
+
+        self.cell_label = ttk.Label(doi_frame, text='DOI')
+        self.cell_label.pack(side=tk.LEFT, padx=5)
+        self.cell_entry = tk.Text(doi_frame, height=10)
+        self.cell_entry.pack(side=tk.LEFT, padx=5)
 
         # Button to generate CSV
-        self.generate_csv_button = tk.Button(self, text='Enviar datos CSV', command=self.generate_csv)
+        generate_frame = ttk.Frame(container)
+        generate_frame.pack(pady=10)
+
+        self.generate_csv_button = ttk.Button(generate_frame, text='Enviar datos CSV', command=self.generate_csv)
         self.generate_csv_button.pack()
 
-        # Button auto-send sapd
-        self.autoenvio-sapd.pack()
-
         # Button to clear DOI field
-        self.clear_doi_button = tk.Button(self, text='Limpiar DOI', command=self.clear_doi)
+        self.clear_doi_button = ttk.Button(generate_frame, text='Limpiar DOI', command=self.clear_doi)
         self.clear_doi_button.pack()
-
-    def reclam(self):
-        system("perm.py")
 
     def generate_csv(self):
         # Get values from the form
@@ -104,18 +119,12 @@ class FormWindow(tk.Frame):
             messagebox.showerror('Error', 'Por favor, rellena todos los campos del formulario.')
             return
 
-        file = open("mail.txt", "w")
-        # Comprobamos si el mail2 está rellenado o no
-        if not email2:
-            mailstotal = email1
-        else:
-            mailstotal = email1 + ";" + email2
-        file.write(mailstotal)
-        file.close()
+        with open("mail.txt", "w") as file:
+            mailstotal = email1 if not email2 else email1 + ";" + email2
+            file.write(mailstotal)
 
-        file = open("auto.txt", "w")
-        file.write(string)
-        file.close()
+        with open("auto.txt", "w") as file:
+            file.write(string)
 
         # Create CSV file and write data
         with open('permisos.csv', 'w', newline='') as file:
@@ -124,9 +133,6 @@ class FormWindow(tk.Frame):
 
         messagebox.showinfo('Éxito', 'Archivo CSV generado.')
         compra()
-    
-   
-        
 
     def clear_doi(self):
         self.cell_entry.delete('1.0', tk.END)
@@ -152,11 +158,6 @@ class FormWindow(tk.Frame):
             file.write(email2 + '\n')
             file.write(string + '\n')
 
-    def destroy(self):
-        self.save_data()
-        super().destroy()
 
-
-root = tk.Tk()
-form_window = FormWindow(root)
-form_window.mainloop()
+app = FormWindow()
+app.mainloop()

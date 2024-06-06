@@ -1,38 +1,17 @@
-import os
-import zipfile
-import smtplib
+import configparser
 
-def send_zip(email, password, zip_file):
-    # Crear un objeto de conexión SMTP
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
+# Crea un objeto ConfigParser
+config = configparser.ConfigParser()
 
-    # Autenticar con el servidor
-    server.login(email, password)
+# Lee el archivo config.ini
+config.read('config.ini')
 
-    # Crear un mensaje de correo electrónico
-    subject = "PermDev ZIP"
-    body = "El ZIP más reciente de PermDev"
-    msg = f"Subject: {subject}\n\n{body}"
+# Accede a los valores
+nombre = config['info']['nombre']
+edad = config['info']['edad']
+email = config['info']['email']
 
-    # Adjuntar el archivo ZIP
-    with open(zip_file, "rb") as f:
-        attachment = f.read()
-    msg += f"attachment; filename={os.path.basename(zip_file)}"
-
-    # Enviar el correo electrónico
-    server.sendmail(email, email, msg.encode())
-
-    server.quit()
-
-
-if __name__ == "__main__":
-    # Obtener la carpeta PermDev
-    permdev_dir = "c:\permdev"
-
-    # Obtener el archivo ZIP más reciente
-    zip_files = os.listdir(permdev_dir)
-    zip_file = max(zip_files, key=lambda f: os.path.getmtime(os.path.join(permdev_dir, f)))
-
-    # Enviar el archivo ZIP
-    send_zip("brahimcah@gmail.com", "brahim41581011-R", os.path.join(permdev_dir, zip_file))
+# Imprime los valores
+print("Nombre:", nombre)
+print("Edad:", edad)
+print("Email:", email)
