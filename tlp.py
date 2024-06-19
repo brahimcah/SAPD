@@ -37,8 +37,8 @@ def check_ftp_connection(host, username, password, port=21):
         return False
 
 # Ejemplo de uso
-host = "un-click.org"
-username = "ftp-sapd"
+host = "ftp.un-click.org"
+username = "ftp-sapd@un-click.org"
 password = "hVkP$emIn9x9"
 
 if check_ftp_connection(host, username, password):
