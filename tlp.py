@@ -1,32 +1,47 @@
-import hashlib
-import csv
-import subprocess
+import ftplib
 
-# Función para encriptar una cadena usando el algoritmo MD5
-def md5_hash(text):
-    return hashlib.md5(text.encode()).hexdigest()
+def check_ftp_connection(host, username, password, port=21):
+    """
+    Verifica si se puede establecer una conexión FTP con el servidor especificado.
+    
+    Args:
+        host (str): La dirección del servidor FTP.
+        username (str): El nombre de usuario para la autenticación.
+        password (str): La contraseña para la autenticación.
+        port (int): El puerto del servidor FTP (por defecto es 21).
 
-# Leer el contenido del archivo auto.txt y encriptarlo en MD5
-with open("auto.txt", "r") as file:
-    auto_content = file.read()
-    auto_md5 = md5_hash(auto_content)
+    Returns:
+        bool: True si la conexión es exitosa, False en caso contrario.
+    """
+    try:
+        # Crear una instancia de FTP
+        ftp = ftplib.FTP()
+        
+        # Intentar conectar al servidor FTP
+        print(f"Conectando a {host}:{port}...")
+        ftp.connect(host, port)
+        
+        # Intentar iniciar sesión con las credenciales proporcionadas
+        print("Iniciando sesión...")
+        ftp.login(username, password)
+        
+        # Cerrar la conexión
+        ftp.quit()
+        
+        # Si todo va bien, la conexión fue exitosa
+        print("Conexión FTP exitosa.")
+        return True
+    except ftplib.all_errors as e:
+        # Si ocurre un error, imprimirlo y retornar False
+        print(f"Error al conectar al servidor FTP: {e}")
+        return False
 
-# Leer el archivo CSV y procesar cada registro
-with open("permisos.csv", "r") as csvfile:
-    reader = csv.DictReader(csvfile)
-    for row in reader:
-        # Encriptar el registro actual
-        encrypted_data = md5_hash(str(row))
+# Ejemplo de uso
+host = "un-click.org"
+username = "ftp-sapd"
+password = "hVkP$emIn9x9"
 
-        # Construir la URL con los parámetros auto y doi
-        url = f"http://localhost:81/sapd-prob/al.php?auto={auto_md5}&doi={encrypted_data}"
-
-        # Construir el comando CURL
-        curl_command = ["curl", url]
-
-        # Ejecutar el comando CURL
-        try:
-            subprocess.run(curl_command, check=True)
-            print("Solicitud enviada correctamente.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error al enviar la solicitud: {e}")
+if check_ftp_connection(host, username, password):
+    print("Puedes conectarte al servidor FTP.")
+else:
+    print("No se pudo establecer una conexión FTP.")
