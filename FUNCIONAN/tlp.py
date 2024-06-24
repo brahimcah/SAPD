@@ -9,10 +9,10 @@ VERSION_URL = 'https://api.un-click.org/sapd/version.php'
 DOWNLOAD_URL = 'https://api.un-click.org/sapd/download.php'
 
 # Ruta del archivo de la versión local
-LOCAL_VERSION_FILE = 'version.txt'
+LOCAL_VERSION_FILE = '../data/version.txt'
 
 # Carpeta de destino para la instalación
-DESTINATION_FOLDER = 'soft'
+DESTINATION_FOLDER = '../soft'
 
 def get_local_version():
     if os.path.exists(LOCAL_VERSION_FILE):
