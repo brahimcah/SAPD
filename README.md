@@ -12,3 +12,7 @@ Github Desktop: https://central.github.com/deployments/desktop/desktop/latest/wi
 <br>
 En la url que nos solicita vamos a indica: **brahimcah/sapd** <br>
 En la url que nos solicita vamos a indica: **c:\permdev\sapd** <br> Y pulsaremos en Clone <br>
+
+## Posible Error en la Pantalla
+<br>
+CZ01 - La carpeta ZIP no se encuentra. Revisar si esta creada y revisar los permios.
