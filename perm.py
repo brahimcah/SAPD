@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkcalendar import DateEntry
 import urllib.parse
 
 def generar_url_mailto():
@@ -17,7 +18,7 @@ def generar_url_mailto():
         
         # Codificar el mensaje y el asunto como parámetros en una URL "mailto"
         body = urllib.parse.quote(mensaje)
-        asunto = urllib.parse.quote(f"RECOGIDA PERMISO {nombre} ({doi})")
+        asunto = urllib.parse.quote(f"RECOGIDA PERMISO {doi} ({nombre})")
         mailto_url = f"mailto:crc.jptgi@dgt.es?subject={asunto}&body={body}"
 
         # Abrir la URL "mailto" en el navegador por defecto
@@ -29,7 +30,7 @@ def generar_url_mailto():
 
 # Crear la ventana principal
 root = tk.Tk()
-root.title("Generador de URL de Correo Electrónico")
+root.title("Solicitar Recogida")
 
 # Crear y organizar los campos del formulario usando grid
 campos = [
@@ -56,7 +57,9 @@ doi_entry.grid(row=2, column=1, padx=10, pady=5)
 buzon_entry = tk.Entry(root)
 buzon_entry.grid(row=3, column=1, padx=10, pady=5)
 
-year_entry = tk.Entry(root)
+# Crear un widget DateEntry
+year_entry = DateEntry(root, width=12, background='darkblue',
+                       foreground='white', borderwidth=2, year=2024)
 year_entry.grid(row=4, column=1, padx=10, pady=5)
 
 generar_url_boton = tk.Button(root, text="Generar URL", command=generar_url_mailto)
