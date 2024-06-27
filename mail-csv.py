@@ -5,12 +5,12 @@ class Menu:
     def __init__(self, master):
         self.master = master
         master.title("SAPD")
-        master.geometry("500x620")  # Define el tamaño de la ventana principal
-        master.configure(bg="#f0f0f0")  # Fondo de la ventana principal
+        master.geometry("400x550")  # Define el tamaño de la ventana principal
+        master.configure(bg="#ffffff")  # Fondo de la ventana principal
 
         # Colores
-        bg_color = "#f0f0f0"
-        frame_color = "#ffffff"
+        bg_color = "#ffffff"
+        frame_color = "#f7f7f7"
         label_fg_color = "#333333"
         button_fg_color = "#ffffff"
         button_bg_color = {
@@ -26,24 +26,24 @@ class Menu:
 
         # Crear etiqueta de selección
         self.label = tk.Label(self.frame, text="SISTEMA AUTOMATIZADO\nDE PERMISOS DEVUELTOS", fg=label_fg_color, bg=frame_color, font=("Helvetica", 16, "bold"))
-        self.label.pack(pady=30)
+        self.label.pack(pady=20)
 
         # Botones en un diccionario para facilitar su creación y gestión
         buttons = {
-            "a": ("ENVIOS DATOS SAPD", 20, 3, self.ejecutar_a),
-            "b": ("SOLICITAR PERMISO JPT", 20, 3, self.ejecutar_b),
-            "c": ("SOPORTE", 20, 3, self.ejecutar_c),
-            "d": ("AJUSTES", 20, 3, self.ejecutar_d),
-            "salir": ("Salir", 20, 3, master.quit),
+            "a": ("ENVIOS DATOS SAPD", self.ejecutar_a),
+            "b": ("SOLICITAR PERMISO JPT", self.ejecutar_b),
+            "c": ("SOPORTE", self.ejecutar_c),
+            "d": ("AJUSTES", self.ejecutar_d),
+            "salir": ("Salir", master.quit),
         }
 
-        for key, (text, width, height, command) in buttons.items():
-            button = tk.Button(self.frame, text=text, fg=button_fg_color, bg=button_bg_color.get(key, None),
-                               font=("Helvetica", 12), width=width, height=height, command=command, bd=0, relief="solid")
+        for key, (text, command) in buttons.items():
+            button = tk.Button(self.frame, text=text, fg=button_fg_color, bg=button_bg_color[key],
+                               font=("Helvetica", 12), width=30, height=2, command=command, bd=0, relief="solid")
             button.pack(pady=10)
 
         # Etiqueta de versión
-        self.version_label = tk.Label(self.frame, text="Versión: 4.2.1 - 02/01/2024", fg=label_fg_color, bg=frame_color, font=("Helvetica", 11))
+        self.version_label = tk.Label(self.frame, text="Versión: 4.2.1 - 02/01/2024", fg=label_fg_color, bg=frame_color, font=("Helvetica", 10))
         self.version_label.pack(pady=20)
 
     def ejecutar_a(self):
