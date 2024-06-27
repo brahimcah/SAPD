@@ -18,7 +18,7 @@ class Menu(QWidget):
         layout.setSpacing(20)  # Espaciado entre widgets
 
         # Crear etiqueta de selección
-        label = QLabel("SISTEMA AUTOMATIZADO\nDE PERMISOS DEVUELTOS")
+        label = QLabel("SISTEMA DE AVISOS\nDE PERMISOS DEVUELTOS")
         label.setAlignment(Qt.AlignCenter)
         label.setFont(QFont("Helvetica", 16, QFont.Bold))
         label.setStyleSheet("color: #333333;")
