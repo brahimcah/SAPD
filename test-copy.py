@@ -36,12 +36,36 @@ class Menu(QWidget):
         button_styles = """
         QPushButton {
             font: 12pt "Helvetica";
-            color: #000000;
-            height: 40px;
+            color: #ffffff;
+            min-width: 10em;
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: 1px solid #007bff;
             border-radius: 5px;
+        }
+        QPushButton:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        QPushButton:pressed {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            padding-left: 20px;
+            padding-top: 20px;
         }
         QPushButton#Salir {
             background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        QPushButton#Salir:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        QPushButton#Salir:pressed {
+            background-color: #545b62;
+            border-color: #545b62;
+            padding-left: 20px;
+            padding-top: 20px;
         }
         """
 
@@ -49,7 +73,7 @@ class Menu(QWidget):
             button = QPushButton(text)
             button.setObjectName(text.replace(" ", ""))
             button.clicked.connect(func)
-            button.setStyleSheet(button_styles + self.get_button_style(text))
+            button.setStyleSheet(button_styles)
             layout.addWidget(button)
 
         # Etiqueta de versión
@@ -60,18 +84,6 @@ class Menu(QWidget):
         layout.addWidget(version_label)
 
         self.setLayout(layout)
-
-    def get_button_style(self, text):
-        if "ENVIOS" in text:
-            return "background-color: #007bff;"
-        elif "PERMISO" in text:
-            return "background-color: #a328a7;"
-        elif "SOPORTE" in text:
-            return "background-color: #dc3545;"
-        elif "AJUSTES" in text:
-            return "background-color: #17a2b8;"
-        else:
-            return ""
 
     def ejecutar_a(self):
         subprocess.run(['python3', 'sapd-send.py'])
