@@ -65,7 +65,7 @@ class Menu(QWidget):
             layout.addWidget(button)
 
         # Etiqueta de versión
-        version_label = QLabel("Versión: 4.2.1 - 02/01/2024")
+        version_label = QLabel("Versión: 5.0.1 - 16/07/2024")
         version_label.setAlignment(Qt.AlignCenter)
         version_label.setFont(QFont("Helvetica", 10))
         version_label.setStyleSheet("color: #333333;")
