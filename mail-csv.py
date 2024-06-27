@@ -47,16 +47,16 @@ class Menu:
         self.version_label.pack(pady=20)
 
     def ejecutar_a(self):
-        subprocess.run(['python3', 'sapd-send.py'])
+        subprocess.run(['python', 'sapd-send.py'])
 
     def ejecutar_b(self):
-        subprocess.run(['python3', 'perm.py'])
+        subprocess.run(['python', 'perm.py'])
 
     def ejecutar_c(self):
-        subprocess.run(['python3', 'soporte.py'])
+        subprocess.run(['python', 'soporte.py'])
 
     def ejecutar_d(self):
-        subprocess.run(['python3', 'conf.py'])
+        subprocess.run(['python', 'conf.py'])
 
 
 root = tk.Tk()
