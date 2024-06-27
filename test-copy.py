@@ -1,7 +1,7 @@
 import sys
 import subprocess
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
-from PyQt5.QtGui import QFont, QIcon
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
 class Menu(QWidget):
@@ -36,21 +36,9 @@ class Menu(QWidget):
         button_styles = """
         QPushButton {
             font: 12pt "Helvetica";
-            color: #ffffff;
+            color: #000000;
             height: 40px;
             border-radius: 5px;
-        }
-        QPushButton#ENVIOS {
-            background-color: #007bff;
-        }
-        QPushButton#PERMISO {
-            background-color: #28a745;
-        }
-        QPushButton#SOPORTE {
-            background-color: #dc3545;
-        }
-        QPushButton#AJUSTES {
-            background-color: #17a2b8;
         }
         QPushButton#Salir {
             background-color: #6c757d;
@@ -59,9 +47,9 @@ class Menu(QWidget):
 
         for text, func in buttons.items():
             button = QPushButton(text)
-            button.setObjectName(text.split()[0])
+            button.setObjectName(text.replace(" ", ""))
             button.clicked.connect(func)
-            button.setStyleSheet(button_styles)
+            button.setStyleSheet(button_styles + self.get_button_style(text))
             layout.addWidget(button)
 
         # Etiqueta de versión
@@ -72,6 +60,18 @@ class Menu(QWidget):
         layout.addWidget(version_label)
 
         self.setLayout(layout)
+
+    def get_button_style(self, text):
+        if "ENVIOS" in text:
+            return "background-color: #007bff;"
+        elif "PERMISO" in text:
+            return "background-color: #a328a7;"
+        elif "SOPORTE" in text:
+            return "background-color: #dc3545;"
+        elif "AJUSTES" in text:
+            return "background-color: #17a2b8;"
+        else:
+            return ""
 
     def ejecutar_a(self):
         subprocess.run(['python3', 'sapd-send.py'])
@@ -93,4 +93,3 @@ def main():
 
 if __name__ == '__main__':
     main()
- 
