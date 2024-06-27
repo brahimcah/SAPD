@@ -1,119 +1,90 @@
-import tkinter as tk
-from tkinter import ttk, messagebox
+import sys
+from PyQt5.QtWidgets import (
+    QApplication, QMainWindow, QWidget, QLabel, QLineEdit,
+    QTextEdit, QPushButton, QVBoxLayout, QHBoxLayout, QMessageBox
+)
+from PyQt5.QtGui import QFont
+
 import csv
 import zipfile
 from datetime import datetime
 import webbrowser
 import os
 
-archivo = open("mail")
-mailsend = archivo.read()
-archivo.close()
-
-def compra():
-    now = datetime.now()
-    format = now.strftime('%d%m%Y%H%M%S')
-
-    url_guarda = os.path.join("C:\\permdev", f"{format}.zip")
-
-    try:
-        import zlib
-        compression = zipfile.ZIP_DEFLATED
-    except ImportError:
-        compression = zipfile.ZIP_STORED
-    zf = zipfile.ZipFile(url_guarda, mode="w")
-    try:
-        zf.write("auto.txt", compress_type=compression)
-        zf.write("mail.txt", compress_type=compression)
-        zf.write("permisos.csv", compress_type=compression)
-    finally:
-        zf.close()
-    mailito = f"mailto:{mailsend}?&subject=CSV-ZIP PERMISOS DEV&body=Buenos días,%0A te adjunto los datos del programa:%0A%0AUn Saludo"
-    webbrowser.open(mailito)
-    webbrowser.open("C:\\permdev")
-
-class FormWindow(tk.Tk):
+class FormWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.title('Formulario')
-        self.geometry('600x600')
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.setWindowTitle('Formulario')
+        self.setGeometry(100, 100, 600, 600)
 
-        # Create a style
-        self.style = ttk.Style(self)
-
-        # Set the theme to a modern theme
-        self.style.theme_use('clam')
-
-        # Configure the style for specific elements
-        self.style.configure('TButton', font=('Helvetica', 12))
-        self.style.configure('TLabel', font=('Helvetica', 12))
-        self.style.configure('TEntry', font=('Helvetica', 12))
-
-        self.create_widgets()
+        self.initUI()
         self.load_data()
 
-    def create_widgets(self):
-        container = ttk.Frame(self, padding="20")
-        container.pack(fill=tk.BOTH, expand=True)
+    def initUI(self):
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
+
+        layout = QVBoxLayout()
+        main_widget.setLayout(layout)
 
         # Email fields
-        email_frame = ttk.Frame(container)
-        email_frame.pack(pady=10, fill=tk.X)
+        email_layout = QHBoxLayout()
+        layout.addLayout(email_layout)
 
-        self.email1_label = ttk.Label(email_frame, text='Email 1:')
-        self.email1_label.pack(side=tk.LEFT, padx=5)
-        self.email1_entry = ttk.Entry(email_frame)
-        self.email1_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        self.email1_label = QLabel('Email 1:')
+        self.email1_entry = QLineEdit()
+        email_layout.addWidget(self.email1_label)
+        email_layout.addWidget(self.email1_entry)
 
-        self.email2_label = ttk.Label(email_frame, text='Email 2:')
-        self.email2_label.pack(side=tk.LEFT, padx=5)
-        self.email2_entry = ttk.Entry(email_frame)
-        self.email2_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True) 
+        self.email2_label = QLabel('Email 2:')
+        self.email2_entry = QLineEdit()
+        email_layout.addWidget(self.email2_label)
+        email_layout.addWidget(self.email2_entry)
 
         # String field
-        string_frame = ttk.Frame(container)
-        string_frame.pack(pady=10, fill=tk.X)
+        string_layout = QHBoxLayout()
+        layout.addLayout(string_layout)
 
-        self.string_label = ttk.Label(string_frame, text='CODIGO CENTRO:')
-        self.string_label.pack(side=tk.LEFT, padx=5)
-        self.string_entry = ttk.Entry(string_frame)
-        self.string_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        self.string_label = QLabel('CODIGO CENTRO:')
+        self.string_entry = QLineEdit()
+        string_layout.addWidget(self.string_label)
+        string_layout.addWidget(self.string_entry)
 
         # Multiple cell fields
-        doi_frame = ttk.Frame(container)
-        doi_frame.pack(pady=10, fill=tk.BOTH, expand=True)
+        doi_layout = QVBoxLayout()
+        layout.addLayout(doi_layout)
 
-        self.cell_label = ttk.Label(doi_frame, text='DOI')
-        self.cell_label.pack(side=tk.TOP, anchor='w', padx=5)
-        self.cell_entry = tk.Text(doi_frame, height=10, wrap=tk.WORD)
-        self.cell_entry.pack(side=tk.LEFT, padx=5, fill=tk.BOTH, expand=True)
+        self.cell_label = QLabel('DOI:')
+        doi_layout.addWidget(self.cell_label)
+        self.cell_entry = QTextEdit()
+        doi_layout.addWidget(self.cell_entry)
 
         # Button frame
-        button_frame = ttk.Frame(container)
-        button_frame.pack(pady=10, fill=tk.X)
+        button_layout = QHBoxLayout()
+        layout.addLayout(button_layout)
 
-        self.generate_csv_button = ttk.Button(button_frame, text='Generar SAPD', command=self.generate_csv)
-        self.generate_csv_button.pack(side=tk.LEFT, padx=5)
+        self.generate_csv_button = QPushButton('Generar SAPD')
+        self.generate_csv_button.clicked.connect(self.generate_csv)
+        button_layout.addWidget(self.generate_csv_button)
 
-        self.tvl = ttk.Button(button_frame, text='Envío Telemático', command=self.clear_doi)
-        self.tvl.pack(side=tk.LEFT, padx=5)
+        self.tvl_button = QPushButton('Envío Telemático')
+        self.tvl_button.clicked.connect(self.clear_doi)
+        button_layout.addWidget(self.tvl_button)
 
-        self.clear_doi_button = ttk.Button(button_frame, text='Limpiar DOI', command=self.clear_doi)
-        self.clear_doi_button.pack(side=tk.LEFT, padx=5)
-
-        
+        self.clear_doi_button = QPushButton('Limpiar DOI')
+        self.clear_doi_button.clicked.connect(self.clear_doi)
+        button_layout.addWidget(self.clear_doi_button)
 
     def generate_csv(self):
         # Get values from the form
-        email1 = self.email1_entry.get()
-        email2 = self.email2_entry.get()
-        string = self.string_entry.get()
-        cells = self.cell_entry.get('1.0', tk.END)
+        email1 = self.email1_entry.text()
+        email2 = self.email2_entry.text()
+        string = self.string_entry.text()
+        cells = self.cell_entry.toPlainText()
 
         # Check if any field is empty
         if not email1 or not string or not cells.strip():
-            messagebox.showerror('Error', 'Por favor, rellena todos los campos del formulario.')
+            QMessageBox.critical(self, 'Error', 'Por favor, rellena todos los campos del formulario.')
             return
 
         with open("mail.txt", "w") as file:
@@ -128,37 +99,59 @@ class FormWindow(tk.Tk):
             writer = csv.writer(file)
             writer.writerows([cell.strip().split('\t') for cell in cells.split('\n') if cell.strip()])
 
-        messagebox.showinfo('Éxito', 'Archivo CSV generado.')
-        compra()
+        QMessageBox.information(self, 'Éxito', 'Archivo CSV generado.')
+        self.compra()
 
     def clear_doi(self):
-        self.cell_entry.delete('1.0', tk.END)
+        self.cell_entry.clear()
 
     def load_data(self):
         try:
             with open('data.txt', 'r') as file:
                 lines = file.readlines()
                 if len(lines) >= 3:
-                    self.email1_entry.insert(0, lines[0].strip())
-                    self.email2_entry.insert(0, lines[1].strip())
-                    self.string_entry.insert(0, lines[2].strip())
+                    self.email1_entry.setText(lines[0].strip())
+                    self.email2_entry.setText(lines[1].strip())
+                    self.string_entry.setText(lines[2].strip())
         except FileNotFoundError:
             pass
 
     def save_data(self):
-        email1 = self.email1_entry.get()
-        email2 = self.email2_entry.get()
-        string = self.string_entry.get()
+        email1 = self.email1_entry.text()
+        email2 = self.email2_entry.text()
+        string = self.string_entry.text()
 
         with open('data.txt', 'w') as file:
             file.write(email1 + '\n')
             file.write(email2 + '\n')
             file.write(string + '\n')
 
-    def on_closing(self):
+    def compra(self):
+        now = datetime.now()
+        format = now.strftime('%d%m%Y%H%M%S')
+
+        url_guarda = os.path.join("C:\\permdev", f"{format}.zip")
+
+        try:
+            compression = zipfile.ZIP_DEFLATED
+        except AttributeError:
+            compression = zipfile.ZIP_STORED
+
+        with zipfile.ZipFile(url_guarda, mode="w") as zf:
+            zf.write("auto.txt", compress_type=compression)
+            zf.write("mail.txt", compress_type=compression)
+            zf.write("permisos.csv", compress_type=compression)
+
+        mailito = f"mailto:{self.email1_entry.text()}?&subject=CSV-ZIP PERMISOS DEV&body=Buenos días,%0A te adjunto los datos del programa:%0A%0AUn Saludo"
+        webbrowser.open(mailito)
+        webbrowser.open("C:\\permdev")
+
+    def closeEvent(self, event):
         self.save_data()
-        self.destroy()
+        event.accept()
 
 if __name__ == "__main__":
-    app = FormWindow()
-    app.mainloop()
+    app = QApplication(sys.argv)
+    window = FormWindow()
+    window.show()
+    sys.exit(app.exec_())
