@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <root>
+     <owner>
+         <name> "John"</name>
+         <organization> "APP Inc."</organization>
+     </owner>
+     <centro>
+         <COD> "GI9999"</COD>
+         <mail> "info@gmail.com;hola@gencat.cat"</mail>
+     </centro>
+     <centro>
+         <COD> "GI9799"</COD>
+         <mail> "infos@gmail.com;hosla@gencat.cat"</mail>
+     </centro>
+ </root>
