@@ -30,13 +30,13 @@ def generar_url_mailto():
 
 # Crear la ventana principal
 root = tk.Tk()
-root.title("Solicitar Recogida")
+root.title("SAPD - Solicitar Recogida")
 
 # Crear y organizar los campos del formulario usando grid
 campos = [
     ("Nombre y Apellidos:", 0, 0),
     ("Nº CENTRO:", 1, 0),
-    ("DOI:", 2, 0),
+    ("DNI/NIE:", 2, 0),
     ("Buzon:", 3, 0),
     ("Fecha de Nacimiento:", 4, 0)
 ]
@@ -62,7 +62,7 @@ year_entry = DateEntry(root, width=12, background='darkblue',
                        foreground='white', borderwidth=2, year=2024)
 year_entry.grid(row=4, column=1, padx=10, pady=5)
 
-generar_url_boton = tk.Button(root, text="Generar URL", command=generar_url_mailto)
+generar_url_boton = tk.Button(root, text="Solicitar Permiso", command=generar_url_mailto)
 generar_url_boton.grid(row=5, column=0, columnspan=2, pady=10)
 
 
