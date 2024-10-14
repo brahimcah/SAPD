@@ -22,23 +22,22 @@ public class FormWindow extends JFrame {
         setTitle("Formulario");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new FlowLayout());
+        
+        // Usar BoxLayout para organizar los componentes verticalmente
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
 
-        add(new JLabel("Email 1:"));
-        email1Field = new JTextField(20);
-        add(email1Field);
-
-        add(new JLabel("Email 2:"));
-        email2Field = new JTextField(20);
-        add(email2Field);
-
-        add(new JLabel("CODIGO CENTRO (EX: GE0000):"));
-        codigoField = new JTextField(20);
-        add(codigoField);
-
-        add(new JLabel("Cells:"));
+        add(createLabelAndField("Email 1:", email1Field = new JTextField(20)));
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
+        add(createLabelAndField("Email 2:", email2Field = new JTextField(20)));
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
+        add(createLabelAndField("CODIGO CENTRO (EX: GE0000):", codigoField = new JTextField(20)));
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
+        
+        add(createLabel("Cells:"));
         cellsField = new JTextArea(10, 40);
         add(new JScrollPane(cellsField));
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
 
         JButton generateCsvButton = new JButton("Generate CSV");
         generateCsvButton.addActionListener(new ActionListener() {
@@ -51,8 +50,21 @@ public class FormWindow extends JFrame {
             }
         });
         add(generateCsvButton);
+        add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
+        
+        add(createLabel("Versión: 1.0.1 - 30/03/2023"));
+    }
 
-        add(new JLabel("Versión: 1.0.1 - 30/03/2023"));
+    private JPanel createLabelAndField(String labelText, JTextField textField) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel(labelText));
+        panel.add(textField);
+        return panel;
+    }
+
+    private JLabel createLabel(String text) {
+        return new JLabel(text);
     }
 
     private void generateCsv() throws IOException {
