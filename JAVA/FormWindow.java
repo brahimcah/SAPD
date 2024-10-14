@@ -22,7 +22,7 @@ public class FormWindow extends JFrame {
         setTitle("Formulario");
         setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         // Usar BoxLayout para organizar los componentes verticalmente
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
@@ -33,7 +33,7 @@ public class FormWindow extends JFrame {
         add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
         add(createLabelAndField("CODIGO CENTRO (EX: GE0000):", codigoField = new JTextField(20)));
         add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
-        
+
         add(createLabel("Cells:"));
         cellsField = new JTextArea(10, 40);
         add(new JScrollPane(cellsField));
@@ -45,13 +45,13 @@ public class FormWindow extends JFrame {
                 try {
                     generateCsv();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    showError("Error generando el archivo CSV: " + ex.getMessage());
                 }
             }
         });
         add(generateCsvButton);
         add(Box.createRigidArea(new Dimension(0, 10))); // Espacio en blanco
-        
+
         add(createLabel("Versión: 1.0.1 - 30/03/2023"));
     }
 
@@ -87,26 +87,33 @@ public class FormWindow extends JFrame {
                 writer.newLine();
             }
         }
-        System.out.println("CSV file generated.");
+        System.out.println("Archivo CSV generado.");
         compra();
     }
 
-    private void compra() throws IOException {
+    private void compra() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
         String format = LocalDateTime.now().format(formatter);
-
         String zipFilePath = "C:/permdev/" + format + ".zip";
+
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFilePath))) {
             addToZipFile("auto.txt", zos);
             addToZipFile("mail.txt", zos);
             addToZipFile("permisos.csv", zos);
+        } catch (IOException e) {
+            showError("Error creando el archivo ZIP: " + e.getMessage());
+            return; // Salir si hay un error
         }
 
-        String mailsend = readFile("mail.txt");
-        String mailtoUrl = "mailto:" + mailsend + "?&subject=CSV-ZIP PERMISOS DEV"
-                + "&body=Buenos días,%0A te adjunto los datos del programa: %0A %0A Un Saludo.zip";
-        openUrl(mailtoUrl);
-        openUrl("file:///C:/permdev");
+        try {
+            String mailsend = readFile("mail.txt");
+            String mailtoUrl = "mailto:" + mailsend + "?&subject=CSV-ZIP PERMISOS DEV"
+                    + "&body=Buenos días,%0A te adjunto los datos del programa: %0A %0A Un Saludo.zip";
+            openUrl(mailtoUrl);
+            openUrl("file:///C:/permdev");
+        } catch (IOException e) {
+            showError("Error leyendo el archivo de correos: " + e.getMessage());
+        }
     }
 
     private void writeToFile(String fileName, String content) throws IOException {
@@ -138,11 +145,15 @@ public class FormWindow extends JFrame {
             try {
                 Desktop.getDesktop().browse(new URI(url));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                showError("Error abriendo la URL: " + e.getMessage());
             }
         } else {
-            System.out.println("Desktop not supported");
+            showError("La funcionalidad de escritorio no es soportada.");
         }
+    }
+
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     public static void main(String[] args) {
