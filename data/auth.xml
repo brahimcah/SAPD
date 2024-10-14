@@ -1,15 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" ?>
- <root>
-     <owner>
-         <name> "John"</name>
-         <organization> "APP Inc."</organization>
-     </owner>
-     <centro>
-         <COD> "GI9999"</COD>
-         <mail> "info@gmail.com;hola@gencat.cat"</mail>
-     </centro>
-     <centro>
-         <COD> "GI9799"</COD>
-         <mail> "infos@gmail.com;hosla@gencat.cat"</mail>
-     </centro>
- </root>
+<auths>
+    <auth>
+        <centro>GI9799</centro>
+        <email_principal>principal@example.com</email_principal>
+        <email_secundario>secundario@example.com</email_secundario>
+    </auth>
+    <auth>
+        <centro>E-GI9999</centro>
+        <email_principal>principal99@example.com</email_principal>
+        <email_secundario>secundario99@example.com</email_secundario>
+    </auth>
+</auths>
